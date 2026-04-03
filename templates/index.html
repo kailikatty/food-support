@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Support Chat</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f0f2f5;
+        }
+
+        .chat-container {
+            width: 420px;
+            height: 680px;
+            background: white;
+            margin: 40px auto;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #00b14f;
+            color: white;
+            padding: 16px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .quick-buttons {
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            background: #fafafa;
+            border-bottom: 1px solid #eee;
+        }
+
+        .quick-buttons button {
+            padding: 6px 10px;
+            border: none;
+            background: #e9ecef;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .quick-buttons button:hover {
+            background: #d4d4d4;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin: 6px 0;
+            padding: 10px 12px;
+            border-radius: 12px;
+            max-width: 75%;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .user {
+            background: #00b14f;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .bot {
+            background: #f1f3f5;
+            align-self: flex-start;
+        }
+
+        .time {
+            font-size: 10px;
+            opacity: 0.6;
+            margin-top: 4px;
+        }
+
+        .input-area {
+            display: flex;
+            border-top: 1px solid #eee;
+        }
+
+        input {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        button.send-btn {
+            background: #00b14f;
+            color: white;
+            border: none;
+            padding: 14px 18px;
+            cursor: pointer;
+        }
+
+        button.send-btn:hover {
+            background: #00913f;
+        }
+
+        .typing {
+            font-size: 12px;
+            color: #888;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="chat-container">
+
+    <div class="header">
+        Food Delivery Support 💬
+    </div>
+
+    <!-- 🔘 MENU -->
+    <div class="quick-buttons">
+        <button onclick="quickSelect('My order is late')">1. Delivery delay</button>
+        <button onclick="quickSelect('Wrong order')">2. Wrong order</button>
+        <button onclick="quickSelect('Food quality bad')">3. Food issue</button>
+        <button onclick="quickSelect('Did not receive order')">4. Not received</button>
+        <button onclick="quickSelect('Cancel my order')">5. Cancel order</button>
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div id="typing" class="typing" style="display:none;">Bot is typing...</div>
+
+    <div class="input-area">
+        <input id="message" placeholder="Type your message..." />
+        <button class="send-btn" onclick="sendMessage()">Send</button>
+    </div>
+
+</div>
+
+<script>
+function getTime() {
+    return new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+}
+
+function addMessage(text, sender) {
+    const messages = document.getElementById("messages");
+
+    const msg = document.createElement("div");
+    msg.classList.add("message", sender);
+
+    msg.innerHTML = `
+        ${text}
+        <div class="time">${getTime()}</div>
+    `;
+
+    messages.appendChild(msg);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function sendMessage() {
+    const input = document.getElementById("message");
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    addMessage(text, "user");
+    input.value = "";
+
+    document.getElementById("typing").style.display = "block";
+
+    fetch("/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: text })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("typing").style.display = "none";
+        addMessage(data.reply, "bot");
+    });
+}
+
+function quickSelect(text) {
+    sendMessageFromButton(text);
+}
+
+function sendMessageFromButton(text) {
+    document.getElementById("message").value = text;
+    sendMessage();
+}
+
+// ⌨️ ENTER = SEND (FIX เสถียร)
+window.onload = function () {
+    document.getElementById("message").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
+};
+</script>
+
+</body>
+</html>
