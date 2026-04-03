@@ -1,0 +1,9 @@
+.DS_Store
+*.jpg
+*.png
+*.log
+*.sqlite
+__pycache__/
+*.pyc
+venv/
+.env
