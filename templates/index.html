@@ -404,28 +404,14 @@ window.onload = function () {
 
         // 🤖 BOT ตอบทันที (ขั้นตอนที่ 1)
         const textEl = addMessage("", "bot");
-        typeText(textEl, "Thank you for your photo 🙏 We are checking it now.");
+        typeText(textEl, "Thank you for your photo 🙏 We are checking it now. Please wait for a moment.");
 
-        // ⏳ step 2 (5 วิ)
-        setTimeout(() => {
 
-            const loadingHTML = `
-                <span class="typing">
-                    We are verifying your case
-                    <span>.</span><span>.</span><span>.</span>
-                </span>
-            `;
-
-            // ✅ ใช้ addMessage ครั้งเดียว และไม่ใช้ typeText
-            addMessage(loadingHTML, "bot");
-
-        }, 5000);
-
-        // ⏳ step 3 (15 วิ)
+        // ⏳ step 3 (10 วิ)
         setTimeout(() => {
             const t3 = addMessage("", "bot");
             typeText(t3, "Thank you for your patience 🙏 We will proceed with your refund.");
-        }, 15000);
+        }, 10000);
 
      };
     reader.readAsDataURL(file);
