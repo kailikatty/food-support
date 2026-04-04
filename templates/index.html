@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Food Support Chat</title>
-    <style>
+<title>Food Support Chat</title>
+
+<style>
 body {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     background: #f0f2f5;
 }
 
-/* 📦 container */
 .chat-container {
     width: 420px;
     height: 680px;
@@ -21,16 +21,20 @@ body {
     overflow: hidden;
 }
 
-/* 🧠 header */
 .header {
     background: #00b14f;
     color: white;
     padding: 16px;
     font-weight: bold;
-    font-size: 16px;
 }
 
-/* 🔘 quick menu */
+.quick-title {
+    padding: 10px;
+    font-size: 13px;
+    color: #555;
+    background: #fafafa;
+}
+
 .quick-buttons {
     padding: 10px;
     display: flex;
@@ -40,25 +44,14 @@ body {
     border-bottom: 1px solid #eee;
 }
 
-<div style="padding:10px; font-size:13px; color:#555;">
-    Please select the issue you are experiencing:
-</div>
-        
 .quick-buttons button {
     padding: 6px 10px;
     border: none;
     background: #e9ecef;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 12px;
-    transition: 0.2s;
 }
 
-.quick-buttons button:hover {
-    background: #d4d4d4;
-}
-
-/* 💬 messages */
 .messages {
     flex: 1;
     padding: 12px;
@@ -67,52 +60,39 @@ body {
     flex-direction: column;
 }
 
-/* ✨ message layout */
 .message {
     display: flex;
-    align-items: flex-end;
     gap: 6px;
     margin: 6px 0;
-    animation: fadeInUp 0.25s ease;
 }
 
-/* 👤 user right */
 .message.user {
     justify-content: flex-end;
 }
 
-/* 🤖 bot left */
 .message.bot {
     justify-content: flex-start;
 }
 
-/* 💬 bubble */
 .bubble {
-    padding: 10px 12px;
+    padding: 10px;
     border-radius: 14px;
     max-width: 75%;
-    font-size: 14px;
 }
 
-/* 🎨 user bubble */
 .user .bubble {
     background: #00b14f;
     color: white;
-    border-bottom-right-radius: 4px;
 }
 
-/* 🎨 bot bubble */
 .bot .bubble {
     background: #f1f3f5;
-    border-bottom-left-radius: 4px;
 }
 
-/* 👤 avatar */
 .avatar {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -127,14 +107,11 @@ body {
     background: #e9ecef;
 }
 
-/* 🕒 time */
 .time {
     font-size: 10px;
     opacity: 0.6;
-    margin-top: 4px;
 }
 
-/* ⌨️ input */
 .input-area {
     display: flex;
     border-top: 1px solid #eee;
@@ -144,68 +121,19 @@ input {
     flex: 1;
     padding: 14px;
     border: none;
-    outline: none;
-    font-size: 14px;
 }
 
 button.send-btn {
     background: #00b14f;
     color: white;
     border: none;
-    padding: 14px 18px;
-    cursor: pointer;
+    padding: 14px;
 }
 
-button.send-btn:hover {
-    background: #00913f;
-}
-
-/* ✨ typing animation (dots) */
 .typing {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin: 6px;
-}
-
-.typing-dot {
-    width: 6px;
-    height: 6px;
-    background: #999;
-    border-radius: 50%;
-    animation: bounce 1.2s infinite;
-}
-
-.typing-dot:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.typing-dot:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-/* ✨ message animation */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ✨ typing bounce */
-@keyframes bounce {
-    0%, 80%, 100% {
-        transform: scale(0.6);
-        opacity: 0.4;
-    }
-    40% {
-        transform: scale(1);
-        opacity: 1;
-    }
+    display: none;
+    padding: 10px;
+    font-size: 12px;
 }
 </style>
 </head>
@@ -214,186 +142,113 @@ button.send-btn:hover {
 
 <div class="chat-container">
 
-    <div class="header">
-        Food Delivery Support 💬
-    </div>
+<div class="header">Food Delivery Support 💬</div>
 
-    <!-- 🔘 MENU -->
-    <div class="quick-buttons">
-        <button onclick="quickSelect('My order is late')">1. Delivery delay</button>
-        <button onclick="quickSelect('Wrong order')">2. Wrong order</button>
-        <button onclick="quickSelect('Food quality bad')">3. Food issue</button>
-        <button onclick="quickSelect('Did not receive order')">4. Not received</button>
-        <button onclick="quickSelect('Cancel my order')">5. Cancel order</button>
-    </div>
+<div class="quick-title">
+    Please select the issue you are experiencing:
+</div>
 
-    <div class="messages" id="messages"></div>
+<div class="quick-buttons">
+    <button onclick="quickSelect('My order is late')">1. Delivery delay</button>
+    <button onclick="quickSelect('Wrong order')">2. Wrong order</button>
+    <button onclick="quickSelect('Food quality bad')">3. Food issue</button>
+    <button onclick="quickSelect('Did not receive order')">4. Not received</button>
+    <button onclick="quickSelect('Cancel my order')">5. Cancel order</button>
+</div>
 
-    <div id="typing" class="typing" style="display:none;">
-    <div class="typing-dot"></div>
-    <div class="typing-dot"></div>
-    <div class="typing-dot"></div>
-    </div>
+<div id="messages" class="messages"></div>
 
-    <div class="input-area">
-        <input id="message" placeholder="Type your message..." />
-        <button class="send-btn" onclick="sendMessage()">Send</button>
-    </div>
+<div id="typing" class="typing">Bot is typing...</div>
+
+<div class="input-area">
+    <input id="message" placeholder="Type your message..." />
+    <button class="send-btn" onclick="sendMessage()">Send</button>
+</div>
 
 </div>
 
-let lastMessage = "";
-lastMessage = text;
-<button onclick="retryMessage()">Try again</button>
-    
-function retryMessage() {
-    if (lastMessage) {
-    document.getElementById("message").value = lastMessage;
-        sendMessage();
-    }
-}
-
 <script>
+
+let lastMessage = "";
+
 function getTime() {
-    return new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
 
-// ✅ FIXED Avatar + Bubble
 function addMessage(text, sender) {
     const messages = document.getElementById("messages");
 
     const msg = document.createElement("div");
-    msg.classList.add("message", sender);
+    msg.className = "message " + sender;
 
-    const avatar = sender === "user" 
+    const avatar = sender === "user"
         ? <div class="avatar user-avatar">👩</div>
         : `<div class="avatar bot-avatar">🤖</div>`;
 
     const bubble = `
         <div class="bubble">
-            <span class="text"></span>
+            ${text}
             <div class="time">${getTime()}</div>
         </div>
     `;
 
     msg.innerHTML = sender === "user"
-        ? ${bubble}${avatar}
-        : `${avatar}${bubble}`;
+        ? bubble + avatar
+        : avatar + bubble;
 
     messages.appendChild(msg);
     messages.scrollTop = messages.scrollHeight;
-
-    return msg.querySelector(".text"); // 🔥 return element for typing
 }
 
-// ✨ typing animation
-function typeText(element, text, speed = 20) {
-    let i = 0;
-
-    function typing() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(typing, speed);
-        }
-    }
-
-    typing();
-}
-
-// ✨ delay
-function getTypingDelay(intent) {
-    const delayMap = {
-        "delivery_delay": 800,
-        "wrong_order": 900,
-        "food_issue": 900,
-        "not_received": 1000,
-        "cancel_order": 700
-    };
-    return delayMap[intent] || 850;
-}
-
-// ✨ tone
-function enhanceReply(reply, intent) {
-    const apologyMap = {
-        "delivery_delay": "We're really sorry for the delay 🙏 ",
-        "wrong_order": "We're really sorry about the wrong order 🙏 ",
-        "food_issue": "We're really sorry about the food quality 🙏 ",
-        "not_received": "We're really sorry you didn't receive your order 🙏 ",
-        "cancel_order": "No worries! "
-    };
-
-    if (!reply) {
-        return "Sorry, something went wrong. Please try again.";
-    }
-
-    return (apologyMap[intent] || "Thanks for reaching out 🙏 ") + reply;
-}
-
-// 🚀 MAIN
 function sendMessage() {
     const input = document.getElementById("message");
     const text = input.value.trim();
 
     if (!text) return;
 
+    lastMessage = text;
+
     addMessage(text, "user");
     input.value = "";
 
-    const typingEl = document.getElementById("typing");
-    typingEl.style.display = "flex";
+    const typing = document.getElementById("typing");
+    typing.style.display = "block";
 
     fetch("/chat", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message: text })
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({message: text})
     })
     .then(res => res.json())
     .then(data => {
-        const intent = data.intent || "general";
-        const delay = getTypingDelay(intent);
-
-        setTimeout(() => {
-            typingEl.style.display = "none";
-
-            const finalReply = enhanceReply(data.reply, intent);
-
-            const textEl = addMessage("", "bot"); // 🔥 FIX
-            typeText(textEl, finalReply);
-
-        }, delay);
+        typing.style.display = "none";
+        addMessage(data.reply, "bot");
     })
-
     .catch(() => {
-    typingEl.style.display = "none";
-
-    const retry = `
-        ⚠️ Network error.
-        <br><br>
-        <button onclick="sendMessage()">Try again</button>
-    `;
-
-    addMessage(retry, "bot");
-});
+        typing.style.display = "none";
+        addMessage(`⚠️ Network error <br><button onclick="retryMessage()">Try again</button>`, "bot");
+    });
 }
 
-// 🔘 buttons
 function quickSelect(text) {
     document.getElementById("message").value = text;
     sendMessage();
 }
 
-// ⌨️ ENTER
-window.onload = function () {
-    document.getElementById("message").addEventListener("keydown", function(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            sendMessage();
-        }
-    });
-};
+function retryMessage() {
+    if (lastMessage) {
+        document.getElementById("message").value = lastMessage;
+        sendMessage();
+    }
+}
+
+document.getElementById("message").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
 </script>
 
 </body>
