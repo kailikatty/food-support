@@ -1,387 +1,197 @@
-<!DOCTYPE html>  <html>  
-<head>  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Support Chat</title>  
-    <style>
-        html, body {
-    margin: 0;
-    font-family: Arial, sans-serif;
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Support Chat</title>
+
+<style>
+
+/* 🔥 RESET + BASE */
+* {
+    box-sizing: border-box;
 }
 
-/* container */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f5f7fb;
+}
+
+/* 📦 CONTAINER */
 .chat-container {
-    max-width: 500px;
-    height: 100vh;
-    margin: auto;
+    max-width: 520px;
+    height: 95vh;
+    margin: 20px auto;
     display: flex;
     flex-direction: column;
-    background: #fff;
-    border-radius: 16px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     overflow: hidden;
 }
 
-/* header */
-.header {
-    background: #1fa855;
-    color: white;
-    padding: 15px;
-    font-weight: bold;
-    text-align: center;
+/* 📱 MOBILE */
+@media (max-width: 600px) {
+    .chat-container {
+        max-width: 100%;
+        height: 100vh;
+        margin: 0;
+        border-radius: 0;
+    }
 }
 
-/* quick section */
+/* 🟢 HEADER */
+.header {
+    background: linear-gradient(135deg, #1fa855, #18a34a);
+    color: white;
+    padding: 16px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* 🔘 QUICK */
 .quick-title {
-    padding: 10px;
-    font-size: 14px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #555;
 }
 
 .quick-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding: 10px;
+    padding: 0 10px 10px;
 }
 
 .quick-buttons button {
     border: none;
     padding: 8px 12px;
     border-radius: 20px;
-    background: #eee;
+    background: #f1f1f1;
     cursor: pointer;
+    font-size: 13px;
+    transition: 0.2s;
 }
 
-/* messages */
+.quick-buttons button:hover {
+    background: #e2e2e2;
+}
+
+/* 💬 CHAT */
 #messages {
     flex: 1;
     overflow-y: auto;
-    padding: 10px;
+    padding: 12px;
 }
 
-/* message bubble */
+/* 💬 MESSAGE */
 .message {
     display: flex;
-    margin: 6px 0;
+    margin: 8px 0;
 }
 
 .message.user {
     justify-content: flex-end;
 }
 
+/* bubble */
 .bubble {
     max-width: 75%;
     padding: 10px 14px;
-    border-radius: 16px;
+    border-radius: 18px;
     font-size: 14px;
+    line-height: 1.4;
+    animation: fadeIn 0.2s ease;
 }
 
 .user .bubble {
     background: #1fa855;
     color: white;
+    border-bottom-right-radius: 6px;
 }
 
 .bot .bubble {
-    background: #eee;
+    background: #f1f1f1;
+    border-bottom-left-radius: 6px;
+}
+
+/* ✨ animation */
+@keyframes fadeIn {
+    from {opacity:0; transform: translateY(5px);}
+    to {opacity:1; transform: translateY(0);}
+}
+
+/* 🔽 INPUT */
+.input-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border-top: 1px solid #eee;
+    background: white;
+}
+
+/* 📎 */
+.upload-btn {
+    background: #f1f1f1;
+    padding: 8px 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.upload-btn:hover {
+    background: #ddd;
 }
 
 /* input */
-.input-area {
-    display: flex;
-    gap: 6px;
-    padding: 10px;
-    border-top: 1px solid #ddd;
-}
-
 .input-area input[type="text"] {
     flex: 1;
-    padding: 10px;
+    padding: 10px 12px;
     border-radius: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
+    outline: none;
 }
 
-.input-area button {
+/* send */
+.send-btn {
     background: #1fa855;
     color: white;
     border: none;
-    padding: 10px 14px;
-    border-radius: 20px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-/* 📱 mobile */
-@media (max-width: 600px) {
-    .chat-container {
-        max-width: 100%;
-        height: 100vh;
-        border-radius: 0;
-    }
-
-    .bubble {
-        font-size: 13px;
-    }
+.send-btn:hover {
+    background: #188f49;
+    transform: scale(1.05);
 }
 
-    /* 💬 chat area */
-    #messages {
-        flex: 1;
-        overflow-y: auto;
-        padding: 10px;
-    }
+/* typing */
+.typing span {
+    animation: blink 1.4s infinite;
+}
 
-    /* 🟢 bubble */
-    .bubble {
-        max-width: 75%;
-        padding: 10px 14px;
-        border-radius: 16px;
-        margin: 6px 0;
-        word-wrap: break-word;
-        font-size: 14px;
-    }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
 
-    /* 👤 user */
-    .user .bubble {
-        background: #4CAF50;
-        color: white;
-        margin-left: auto;
-    }
+@keyframes blink {
+    0%,80%,100%{opacity:0;}
+    40%{opacity:1;}
+}
 
-    /* 🤖 bot */
-    .bot .bubble {
-        background: #eee;
-    }
-
-    /* 🔽 input area */
-    .input-area {
-        display: flex;
-        gap: 6px;
-        padding: 10px;
-        border-top: 1px solid #ddd;
-    }
-
-    /* input */
-    .input-area input {
-        flex: 1;
-        padding: 10px;
-        border-radius: 20px;
-        border: 1px solid #ccc;
-    }
-
-    /* send button */
-    .send-btn {
-        background: #4CAF50;
-        color: white;
-        border: none;
-        padding: 10px 14px;
-        border-radius: 20px;
-    }
-
-    /* 📱 ปรับมือถือ */
-    @media (max-width: 600px) {
-        .bubble {
-            font-size: 13px;
-        }
-
-        .send-btn {
-            padding: 8px 10px;
-        }
-    }
-
-    .typing span {
-        animation: blink 1.4s infinite;
-    }
-
-    .typing span:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-
-    .typing span:nth-child(3) {
-        animation-delay: 0.4s;
-    }
-
-    @keyframes blink {
-        0%, 80%, 100% { opacity: 0; }
-        40% { opacity: 1; }
-    }
-        
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-        background: #f0f2f5;
-    }
-
-    .chat-container {
-        width: 420px;
-        height: 680px;
-        background: white;
-        margin: 40px auto;
-        border-radius: 16px;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        overflow: hidden;
-    }
-
-    .header {
-        background: #00b14f;
-        color: white;
-        padding: 16px;
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .quick-title {
-        padding: 10px 12px;
-        font-size: 13px;
-        color: #666;
-        background: #fafafa;
-    }
-
-    .quick-buttons {
-        padding: 10px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        background: #fafafa;
-        border-bottom: 1px solid #eee;
-    }
-
-    .quick-buttons button {
-        padding: 6px 10px;
-        border: none;
-        background: #e9ecef;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 12px;
-        transition: 0.2s;
-    }
-
-    .quick-buttons button:hover {
-        background: #ddd;
-    }
-
-    .messages {
-        flex: 1;
-        padding: 12px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* ✨ UPDATED MESSAGE STYLE */
-    .message {
-        display: flex;
-        margin: 6px 0;
-    }
-
-    /* 👤 USER → ขวา */
-    .message.user {
-        justify-content: flex-end;
-    }
-
-    /* 🤖 BOT → ซ้าย */
-    .message.bot {
-        justify-content: flex-start;
-    }
-
-    /* ✨ เรียง bubble + avatar */
-    .message.user .bubble {
-        order: 1;
-    }
-
-    .message.user .avatar {
-        order: 2;
-    }
-
-    .message.bot .avatar {
-        order: 1;
-    }
-
-    .message.bot .bubble {
-        order: 2;
-    }
-
-    /* ✨ AVATAR */
-    .avatar {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .bot-avatar {
-        background: #e9ecef;
-    }
-
-    .user-avatar {
-        background: #00b14f;
-        color: white;
-    }
-
-    /* ✨ BUBBLE */
-    .bubble {
-        padding: 10px 12px;
-        border-radius: 14px;
-        max-width: 75%;
-        font-size: 14px;
-    }
-
-    .user .bubble {
-        background: #00b14f;
-        color: white;
-        border-bottom-right-radius: 4px;
-    }
-
-    .bot .bubble {
-        background: #f1f3f5;
-        border-bottom-left-radius: 4px;
-    }
-
-    .time {
-        font-size: 10px;
-        opacity: 0.6;
-        margin-top: 4px;
-    }
-
-    .input-area {
-        display: flex;
-        border-top: 1px solid #eee;
-    }
-
-    input {
-        flex: 1;
-        padding: 14px;
-        border: none;
-        outline: none;
-        font-size: 14px;
-    }
-
-    button.send-btn {
-        background: #00b14f;
-        color: white;
-        border: none;
-        padding: 14px 18px;
-        cursor: pointer;
-    }
-
-    button.send-btn:hover {
-        background: #00913f;
-    }
-
-    .typing {
-        font-size: 12px;
-        color: #888;
-        margin: 5px;
-    }
 </style>
-    
-</head>  
-    <body>  
-    <body>
+</head>
+
+<body>
+
 <div class="chat-container">
 
-    <div class="header">
-        Food Delivery Support Chat 💬
-    </div>
+    <div class="header">Food Delivery Support Chat 💬</div>
 
     <div class="quick-title">
         Please describe the issue you are experiencing:
@@ -399,13 +209,15 @@
     <div id="messages"></div>
 
     <div class="input-area">
-        <input type="file" id="imageInput">
+        <label for="imageInput" class="upload-btn">📎</label>
+        <input type="file" id="imageInput" hidden>
+
         <input type="text" id="message" placeholder="Type your message...">
-        <button onclick="sendMessage()">Send</button>
+
+        <button class="send-btn" onclick="sendMessage()">➤</button>
     </div>
 
 </div>
-</body>
     
      
 <script> 
