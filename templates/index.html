@@ -372,17 +372,21 @@ window.onload = function () {
 
         // 🤖 BOT ตอบทันที (ขั้นตอนที่ 1)
         const textEl = addMessage("", "bot");
-        typeText(textEl, "Thank you for your photo 🙏 We are checking it now. Please wait a moment.");
+        typeText(textEl, "Thank you for your photo 🙏 We are checking it now.");
 
-        // ⏳ delay แล้วตอบต่อ (ขั้นตอนที่ 2)
+        // ⏳ step 2 (3 วิ)
         setTimeout(() => {
-            const textEl2 = addMessage("", "bot");
-            typeText(textEl2, "Thank you for your patience 🙏 We will proceed with your refund. We sincerely apologize for the inconvenience.");
-        }, 10000); // 10 วินาที
-    };
+            const t2 = addMessage("", "bot");
+            typeText(t2, "We are verifying your case...");
+        }, 5000);
 
+        // ⏳ step 3 (10 วิ)
+        setTimeout(() => {
+            const t3 = addMessage("", "bot");
+            typeText(t3, "Thank you for your patience 🙏 We will proceed with your refund.");
+        }, 10000);
+     };
     reader.readAsDataURL(file);
-});
-};    
+});   
 </script>  </body>  
 </html>
