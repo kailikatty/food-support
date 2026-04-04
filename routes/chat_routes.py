@@ -17,7 +17,10 @@ def chat():
 
     is_follow_up = any(word in user_input for word in follow_up_keywords)
 
-    if intent != "unknown" and is_follow_up:
+    if intent == "others" or intent == "unknown":
+        reply = generate_ai_response(user_input, None)
+
+    elif intent != "unknown" and is_follow_up:
         reply = generate_ai_response(user_input, intent)
         
 
