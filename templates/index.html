@@ -237,6 +237,8 @@ function addMessage(text, sender) {
     messages.appendChild(wrapper);
 
     messages.scrollTop = messages.scrollHeight;
+
+    return bubble; // 🔥 ต้องมี!
 }
 
 /* send */
@@ -408,30 +410,33 @@ window.onload = function () {
             sendMessage();
         }
     });
-    document.getElementById("imageInput").addEventListener("change", function () {
-    const file = this.files[0];
-    if (!file) return;
+    const imageInput = document.getElementById("imageInput");
 
-    const reader = new FileReader();
+    if (imageInput) {
+    imageInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (!file) return;
 
-    reader.onload = function (e) {
-        // 📸 แสดงรูปของ user
-        const img = `<img src="${e.target.result}" style="max-width:150px; border-radius:10px;">`;
-        addMessage(img, "user");
+        const reader = new FileReader();
 
-        fetch("/chat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                message: "[image_uploaded]"
-            })
-        });
+        reader.onload = function (e) {
+            const img = `<img src="${e.target.result}" style="max-width:150px; border-radius:10px;">`;
+            addMessage(img, "user");
+
+            fetch("/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: "[image_uploaded]"
+                })
+            });
+
 
         // 🤖 BOT ตอบทันที (ขั้นตอนที่ 1)
-        const textEl = addMessage("", "bot");
-        typeText(textEl, "Thank you for your photo 🙏 We are checking it now. Please wait for a moment.");
+            const textEl = addMessage("", "bot");
+            typeText(textEl, "Thank you for your photo 🙏 We are checking it now. Please wait for a moment.");
 
 
         // ⏳ step 3 (10 วิ)
