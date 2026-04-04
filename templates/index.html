@@ -197,9 +197,14 @@
 
 <div id="typing" class="typing" style="display:none;">Bot is typing...</div>  
 
-<div class="input-area">  
-    <input id="message" placeholder="Type your message..." />  
-    <button class="send-btn" onclick="sendMessage()">Send</button>  
+<div class="input-area">
+    <input type="file" id="imageInput" accept="image/*" style="display:none;" />
+    
+    <button onclick="document.getElementById('imageInput').click()">📎</button>
+
+    <input id="message" placeholder="Type your message..." />
+    
+    <button class="send-btn" onclick="sendMessage()">Send</button>
 </div>
 
 </div>  
@@ -354,6 +359,22 @@ window.onload = function () {
             sendMessage();
         }
     });
-};
+    document.getElementById("imageInput").addEventListener("change", function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        // แสดงรูปใน chat
+        const img = `<img src="${e.target.result}" style="max-width:150px; border-radius:10px;">`;
+        addMessage(img, "user");
+
+        // TODO: ถ้าจะส่งไป backend เพิ่มตรงนี้
+    };
+
+    reader.readAsDataURL(file);
+});
+};    
 </script>  </body>  
 </html>
