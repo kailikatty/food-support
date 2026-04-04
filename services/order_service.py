@@ -1,9 +1,9 @@
 orders = {
-    "123": {"status": "on the way"},
+    "001": {"status": "on the way"},
 }
 
 def process_issue(intent):
-    order_id = "123"
+    order_id = "001"
     status = orders.get(order_id, {}).get("status", "unknown")
 
     if intent == "delivery_delay":
