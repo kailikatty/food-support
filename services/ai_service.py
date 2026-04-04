@@ -30,24 +30,24 @@ def generate_ai_response(user_input, intent=None):
         Customer: {user_input}
         """
 
-        response = client.models.generate_content(
-            model="gemini-1.5-flash",  # ✅ เสถียรกว่า 2.5
-            contents=prompt
-        )
+        try:
+            response = client.models.generate_content(
+                model="gemini-1.5-flash",  # ✅ เสถียรกว่า 2.5
+                contents=prompt
+            )
+            reply = response.text or "Sorry, I couldn't generate a response."
 
-        # ✅ กัน None
-        reply = response.text if response.text else "Sorry, I couldn't understand that."
+        except Exception as e:
+            print("AI ERROR:", e)
+            return "⚠️ Sorry, system error. Please try again."
 
         # ✅ save memory
         chat_history.append(f"Customer: {user_input}")
         chat_history.append(f"Agent: {reply}")
 
         # ✅ limit memory จริง
-        chat_history = chat_history[-10:]
+        chat_history = chat_history[-6:]
 
         return reply
 
-    except Exception as e:
-        print("AI ERROR:", e)  # 🔥 ดูใน Render logs
-        return "Sorry, I couldn't process that. Please try again."
 
