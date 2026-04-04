@@ -366,11 +366,19 @@ window.onload = function () {
     const reader = new FileReader();
 
     reader.onload = function (e) {
-        // แสดงรูปใน chat
+        // 📸 แสดงรูปของ user
         const img = `<img src="${e.target.result}" style="max-width:150px; border-radius:10px;">`;
         addMessage(img, "user");
 
-        // TODO: ถ้าจะส่งไป backend เพิ่มตรงนี้
+        // 🤖 BOT ตอบทันที (ขั้นตอนที่ 1)
+        const textEl = addMessage("", "bot");
+        typeText(textEl, "Thank you for your photo 🙏 We are checking it now. Please wait a moment.");
+
+        // ⏳ delay แล้วตอบต่อ (ขั้นตอนที่ 2)
+        setTimeout(() => {
+            const textEl2 = addMessage("", "bot");
+            typeText(textEl2, "Thank you for your patience 🙏 We will proceed with your refund. We sincerely apologize for the inconvenience.");
+        }, 2000); // 2 วินาที
     };
 
     reader.readAsDataURL(file);
