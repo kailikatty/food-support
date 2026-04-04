@@ -40,6 +40,10 @@ body {
     border-bottom: 1px solid #eee;
 }
 
+<div style="padding:10px; font-size:13px; color:#555;">
+    Please select the issue you are experiencing:
+</div>
+        
 .quick-buttons button {
     padding: 6px 10px;
     border: none;
@@ -243,7 +247,7 @@ function getTime() {
     return new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 }
 
-// ✨ Avatar + Bubble version
+// ✅ FIXED Avatar + Bubble
 function addMessage(text, sender) {
     const messages = document.getElementById("messages");
 
@@ -256,23 +260,24 @@ function addMessage(text, sender) {
 
     const bubble = `
         <div class="bubble">
-            ${text}
+            <span class="text"></span>
             <div class="time">${getTime()}</div>
         </div>
     `;
 
     msg.innerHTML = sender === "user"
-        ? ${bubble}${avatar}   // user อยู่ขวา
-        : `${avatar}${bubble}`;  // bot อยู่ซ้าย
+        ? ${bubble}${avatar}
+        : `${avatar}${bubble}`;
 
     messages.appendChild(msg);
     messages.scrollTop = messages.scrollHeight;
+
+    return msg.querySelector(".text"); // 🔥 return element for typing
 }
 
-// ✨ typing animation (พิมพ์ทีละตัว)
+// ✨ typing animation
 function typeText(element, text, speed = 20) {
     let i = 0;
-    element.innerHTML = "";
 
     function typing() {
         if (i < text.length) {
@@ -285,7 +290,7 @@ function typeText(element, text, speed = 20) {
     typing();
 }
 
-// ✨ confidence-based delay
+// ✨ delay
 function getTypingDelay(intent) {
     const delayMap = {
         "delivery_delay": 800,
@@ -294,11 +299,10 @@ function getTypingDelay(intent) {
         "not_received": 1000,
         "cancel_order": 700
     };
-
     return delayMap[intent] || 850;
 }
 
-// ✨ tone enhancer
+// ✨ tone
 function enhanceReply(reply, intent) {
     const apologyMap = {
         "delivery_delay": "We're really sorry for the delay 🙏 ",
@@ -312,10 +316,10 @@ function enhanceReply(reply, intent) {
         return "Sorry, something went wrong. Please try again.";
     }
 
-    const prefix = apologyMap[intent] || "Thanks for reaching out 🙏 ";
-    return prefix + reply;
+    return (apologyMap[intent] || "Thanks for reaching out 🙏 ") + reply;
 }
 
+// 🚀 MAIN
 function sendMessage() {
     const input = document.getElementById("message");
     const text = input.value.trim();
@@ -326,7 +330,7 @@ function sendMessage() {
     input.value = "";
 
     const typingEl = document.getElementById("typing");
-    typingEl.style.display = "block";
+    typingEl.style.display = "flex";
 
     fetch("/chat", {
         method: "POST",
@@ -337,7 +341,6 @@ function sendMessage() {
     })
     .then(res => res.json())
     .then(data => {
-
         const intent = data.intent || "general";
         const delay = getTypingDelay(intent);
 
@@ -346,9 +349,8 @@ function sendMessage() {
 
             const finalReply = enhanceReply(data.reply, intent);
 
-            // 🔥 typing animation ใช้ตรงนี้
-            const bubble = addMessage("", "bot");
-            typeText(bubble, finalReply);
+            const textEl = addMessage("", "bot"); // 🔥 FIX
+            typeText(textEl, finalReply);
 
         }, delay);
     })
@@ -358,16 +360,13 @@ function sendMessage() {
     });
 }
 
+// 🔘 buttons
 function quickSelect(text) {
-    sendMessageFromButton(text);
-}
-
-function sendMessageFromButton(text) {
     document.getElementById("message").value = text;
     sendMessage();
 }
 
-// ⌨️ ENTER = SEND
+// ⌨️ ENTER
 window.onload = function () {
     document.getElementById("message").addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
