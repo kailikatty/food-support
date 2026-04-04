@@ -242,6 +242,17 @@ button.send-btn:hover {
 
 </div>
 
+let lastMessage = "";
+lastMessage = text;
+<button onclick="retryMessage()">Try again</button>
+    
+function retryMessage() {
+    if (lastMessage) {
+    document.getElementById("message").value = lastMessage;
+        sendMessage();
+    }
+}
+
 <script>
 function getTime() {
     return new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
@@ -354,10 +365,18 @@ function sendMessage() {
 
         }, delay);
     })
+
     .catch(() => {
-        typingEl.style.display = "none";
-        addMessage("⚠️ Network error. Please try again.", "bot");
-    });
+    typingEl.style.display = "none";
+
+    const retry = `
+        ⚠️ Network error.
+        <br><br>
+        <button onclick="sendMessage()">Try again</button>
+    `;
+
+    addMessage(retry, "bot");
+});
 }
 
 // 🔘 buttons
