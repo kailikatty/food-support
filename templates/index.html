@@ -282,7 +282,7 @@ function enhanceReply(reply, intent) {
         return "Sorry, something went wrong. Please try again.";
     }
 
-    const prefix = apologyMap[intent] || "Thanks for reaching out 🙏 ";
+    const prefix = apologyMap[intent] || "Thanks for reaching out. ";
     return prefix + reply;
 }
 
