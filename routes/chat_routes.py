@@ -8,13 +8,21 @@ chat_bp = Blueprint("chat", __name__)
 @chat_bp.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
-    user_input = data.get("message", "")
+    user_input = data.get("message", "").lower()
 
-    # 🔍 detect intent
     intent = detect_intent(user_input)
 
-    # 🧠 rule-based responses (สำคัญมาก)
-    if intent == "delivery_delay":
+    # 🧠 detect follow-up (สำคัญมาก)
+    follow_up_keywords = ["refund", "how", "when", "why", "where", "can i", "what"]
+
+    is_follow_up = any(word in user_input for word in follow_up_keywords)
+
+    # ✅ ถ้าเป็น follow-up → ให้ AI ตอบเลย
+    if is_follow_up:
+        reply = generate_ai_response(user_input, intent)
+
+    # 🧠 rule-based (เฉพาะเคสหลัก)
+    elif intent == "delivery_delay":
         reply = "Your order 001 is still on the way. It should arrive shortly. If the delay continues, we can offer a discount for your next order."
 
     elif intent == "wrong_order":
@@ -29,7 +37,7 @@ def chat():
     elif intent == "cancel_order":
         reply = "Your order has been cancelled. If payment was completed, the refund will be processed shortly."
 
-    # 🧠 fallback → AI (รองรับถามต่อ เช่น refund)
+    # 🤖 default → AI
     else:
         reply = generate_ai_response(user_input, intent)
 
