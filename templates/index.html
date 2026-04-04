@@ -187,7 +187,7 @@
 <div class="quick-buttons">  
     <button onclick="quickSelect('My order is late')">1. Delivery delay</button>  
     <button onclick="quickSelect('Wrong order')">2. Wrong order</button>  
-    <button onclick="quickSelect('Food quality bad')">3. Food issue</button>  
+    <button onclick="quickSelect('Food issue')">3. Food issue</button>  
     <button onclick="quickSelect('Did not receive order')">4. Not received</button>  
     <button onclick="quickSelect('Cancel my order')">5. Cancel order</button>  
     <button onclick="quickSelect('Others')">6. Others</button>
@@ -274,8 +274,6 @@ function getTypingDelay(intent) {
 function enhanceReply(reply, intent) {
     const apologyMap = {
         "delivery_delay": "We're really sorry for the delay 🙏 ",
-        "wrong_order": "We're really sorry about the wrong order 🙏 ",
-        "food_issue": "We're really sorry about the food quality 🙏 ",
         "not_received": "We're really sorry you didn't receive your order 🙏 ",
         "cancel_order": "No worries! "
     };
