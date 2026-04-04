@@ -42,7 +42,7 @@ def chat():
     elif intent == "wrong_order":
         reply = (
             "We’re really sorry that you received the wrong order 🙏 That’s definitely not the experience we want for you.\n\n"
-            "Could you please share a photo of your receipt or the items you received?"
+            "Could you please share a photo of your receipt or the items you received?"\n
             "This will help us verify the issue quickly.\n\n"
             "Once confirmed, we will process your refund right away."
         )
