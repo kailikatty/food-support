@@ -11,5 +11,7 @@ def detect_intent(user_input):
         return "not_received"
     elif "cancel" in text:
         return "cancel_order"
+    elif "other" in text:
+        return "others"
 
     return "general"
