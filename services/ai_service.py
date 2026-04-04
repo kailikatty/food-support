@@ -1,9 +1,7 @@
 import os
-import google.generativeai as genai
+from google import genai
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
-model = genai.GenerativeModel("gemini-2.5-flash")
+client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
 chat_history = []
 
@@ -11,16 +9,20 @@ def generate_ai_response(user_input):
     history = "\n".join(chat_history)
 
     prompt = f"""
-    You are a professional food delivery support agent.
-    Be polite and helpful.
+You are a professional food delivery support agent.
+Be polite and helpful.
 
-    Conversation:
-    {history}
+Conversation:
+{history}
 
-    Customer: {user_input}
-    """
+Customer: {user_input}
+"""
 
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+
     reply = response.text
 
     chat_history.append(f"User: {user_input}")
