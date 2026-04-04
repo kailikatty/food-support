@@ -33,7 +33,10 @@ def chat():
 
     # 🔥 DELIVERY STAFF
     elif any(word in user_input for word in ["delivery man", "rider", "driver", "courier"]):
-        reply = "We're really sorry about your experience with the delivery staff. We will report this issue immediately."
+        reply = """We’re really sorry to hear about your experience with our delivery staff 🙏 
+    That’s definitely not the level of service we aim to provide.
+    We truly appreciate you bringing this to our attention. We will look into this matter and take appropriate action to prevent it from happening again.
+    Please let us know if there’s anything else we can assist you with."""
 
     # 🔥 WRONG ORDER
     elif intent == "wrong_order":
