@@ -18,6 +18,11 @@ def chat():
     else:
         reply = generate_ai_response(user_input, intent)
 
+    if intent in ["delivery_delay", "wrong_order", "food_issue"]:
+        reply = result
+    else:
+        reply = generate_ai_response(user_input, intent)
+
     return jsonify({
         "reply": reply,
         "intent": intent
