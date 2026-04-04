@@ -4,50 +4,55 @@ from google import genai
 # ✅ init client
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
-# ✅ FIX: ต้องประกาศก่อนใช้
+# ✅ memory
 chat_history = []
 
 def generate_ai_response(user_input, intent=None):
     global chat_history
 
+    # ✅ limit history
+    history = "\n".join(chat_history[-6:])
+
+    prompt = f"""
+You are a professional food delivery support agent.
+
+Rules:
+- Always apologize first when there is a problem
+- Be polite and helpful
+- Answer clearly and naturally
+- If user asks follow-up questions, continue the conversation
+- If user asks about refund → explain timeline (3-5 days)
+
+Conversation:
+{history}
+
+Customer: {user_input}
+"""
+
     try:
-        # ✅ limit history กันยาวเกิน
-        history = "\n".join(chat_history[-6:])
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",   # ✅ ใช้ได้ ถ้า key รองรับ
+            contents=prompt
+        )
 
-        prompt = f"""
-        You are a professional food delivery support agent.
+        # ✅ กัน response พัง
+        reply = getattr(response, "text", None)
 
-        Rules:
-        - Always apologize first when there is a problem
-        - Be polite and helpful
-        - Answer clearly and naturally
-        - If user asks follow-up questions, continue the conversation
-        - If user asks about refund → explain timeline (3-5 days)
+        if not reply:
+            reply = "Sorry, I couldn't generate a response."
 
-        Conversation:
-        {history}
+    except Exception as e:
+        print("🔥 AI ERROR:", e)
 
-        Customer: {user_input}
-        """
+        # ✅ fallback (สำคัญมาก)
+        reply = "⚠️ Sorry, system is busy right now. Please try again."
 
-        try:
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=prompt
-            )
-            reply = response.text or "Sorry, I couldn't generate a response."
+    # ✅ save memory
+    chat_history.append(f"Customer: {user_input}")
+    chat_history.append(f"Agent: {reply}")
 
-        except Exception as e:
-            print("AI ERROR:", e)
-            return "⚠️ Sorry, system error. Please try again."
+    # ✅ limit memory จริง
+    chat_history = chat_history[-6:]
 
-        # ✅ save memory
-        chat_history.append(f"Customer: {user_input}")
-        chat_history.append(f"Agent: {reply}")
-
-        # ✅ limit memory จริง
-        chat_history = chat_history[-6:]
-
-        return reply
-
+    return reply
 
