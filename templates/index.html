@@ -399,20 +399,5 @@ function getTypingDelay(intent) {
 }
 
 
-/* =========================
-   🎯 ENHANCE RESPONSE
-========================= */
-function enhanceReply(reply, intent) {
-    if (!reply) return "Sorry, something went wrong.";
-
-    const map = {
-        delivery_delay: "We're really sorry for the delay 🙏 ",
-        not_received: "We're really sorry 🙏 ",
-        cancel_order: "No worries! "
-    };
-
-    return (map[intent] || "Thanks for reaching out. ") + reply;
-}
-
 </script>  </body>  
 </html>
