@@ -3,7 +3,7 @@ from google import genai
 
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
-chat_history = []
+chat_history = chat_history[-6:] #จำกัด context 
 
 def generate_ai_response(user_input, intent=None):
     history = "\n".join(chat_history)
