@@ -121,6 +121,7 @@ input {
     flex: 1;
     padding: 14px;
     border: none;
+    outline: none;
 }
 
 button.send-btn {
@@ -128,6 +129,7 @@ button.send-btn {
     color: white;
     border: none;
     padding: 14px;
+    cursor: pointer;
 }
 
 .typing {
@@ -149,11 +151,11 @@ button.send-btn {
 </div>
 
 <div class="quick-buttons">
-    <button onclick="quickSelect('My order is late')">1. Delivery delay</button>
-    <button onclick="quickSelect('Wrong order')">2. Wrong order</button>
-    <button onclick="quickSelect('Food quality bad')">3. Food issue</button>
-    <button onclick="quickSelect('Did not receive order')">4. Not received</button>
-    <button onclick="quickSelect('Cancel my order')">5. Cancel order</button>
+    <button data-msg="My order is late">1. Delivery delay</button>
+    <button data-msg="Wrong order">2. Wrong order</button>
+    <button data-msg="Food quality bad">3. Food issue</button>
+    <button data-msg="Did not receive order">4. Not received</button>
+    <button data-msg="Cancel my order">5. Cancel order</button>
 </div>
 
 <div id="messages" class="messages"></div>
@@ -162,12 +164,13 @@ button.send-btn {
 
 <div class="input-area">
     <input id="message" placeholder="Type your message..." />
-    <button class="send-btn" onclick="sendMessage()">Send</button>
+    <button id="sendBtn" class="send-btn">Send</button>
 </div>
 
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
 
 let lastMessage = "";
 
@@ -230,11 +233,6 @@ function sendMessage() {
     });
 }
 
-function quickSelect(text) {
-    document.getElementById("message").value = text;
-    sendMessage();
-}
-
 function retryMessage() {
     if (lastMessage) {
         document.getElementById("message").value = lastMessage;
@@ -242,6 +240,19 @@ function retryMessage() {
     }
 }
 
+/* ✅ FIX ปุ่มหัวข้อ */
+document.querySelectorAll(".quick-buttons button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const text = btn.getAttribute("data-msg");
+        document.getElementById("message").value = text;
+        sendMessage();
+    });
+});
+
+/* ✅ FIX ปุ่ม Send */
+document.getElementById("sendBtn").addEventListener("click", sendMessage);
+
+/* ✅ FIX Enter */
 document.getElementById("message").addEventListener("keydown", function(e){
     if(e.key === "Enter"){
         e.preventDefault();
@@ -249,6 +260,7 @@ document.getElementById("message").addEventListener("keydown", function(e){
     }
 });
 
+});
 </script>
 
 </body>
