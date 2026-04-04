@@ -48,28 +48,28 @@ def chat():
     elif intent == "food_issue":
 
     # 🟡 CASE 1: user ส่งรูปก่อน (ยังไม่อธิบาย)
-    if user_state["food_issue"]["image_uploaded"] and not user_state["food_issue"]["described"]:
-        reply = (
-            "Thank you for your photo 🙏\n\n"
-            "Could you please describe what was wrong with the food?"
-        )
+        if user_state["food_issue"]["image_uploaded"] and not user_state["food_issue"]["described"]:
+            reply = (
+                "Thank you for your photo 🙏\n\n"
+                "Could you please describe what was wrong with the food?"
+            )
 
     # 🟡 CASE 2: user อธิบายแล้ว แต่ยังไม่ส่งรูป
-    elif any(word in user_input for word in ["insect", "spoiled", "bad", "cold"]):
+        elif any(word in user_input for word in ["insect", "spoiled", "bad", "cold"]):
         user_state["food_issue"]["described"] = True
 
-        reply = (
-            "We're really sorry to hear that 🙏\n\n"
-            "Could you please upload a photo so we can verify the issue?"
-        )
+            reply = (
+                "We're really sorry to hear that 🙏\n\n"
+                "Could you please upload a photo so we can verify the issue?"
+            )
 
     # 🟡 CASE 3: user ทำครบแล้ว → refund
-    elif user_state["food_issue"]["described"] and user_state["food_issue"]["image_uploaded"]:
-        reply = (
-            "Thank you for your patience 🙏\n\n"
-            "We have verified the issue and will proceed with your refund.\n"
-            "We sincerely apologize for the inconvenience."
-        )
+        elif user_state["food_issue"]["described"] and user_state["food_issue"]["image_uploaded"]:
+            reply = (
+                "Thank you for your patience 🙏\n\n"
+                "We have verified the issue and will proceed with your refund.\n"
+                "We sincerely apologize for the inconvenience."
+            )
 
         # reset state
         user_state["food_issue"] = {
@@ -78,13 +78,13 @@ def chat():
         }
 
     # 🟡 CASE 4: เริ่มต้น
-    else:
-        reply = (
-            "We're really sorry about your food issue 🙏\n\n"
-            "Could you please describe what was wrong with the food?\n"
-            "(e.g. cold, spoiled, missing items)\n\n"
-            "You can also upload a photo for verification."
-        )
+        else:
+            reply = (
+                "We're really sorry about your food issue 🙏\n\n"
+                "Could you please describe what was wrong with the food?\n"
+                "(e.g. cold, spoiled, missing items)\n\n"
+                "You can also upload a photo for verification."
+            )
 
     # 🔥 DELIVERY DELAY
     elif intent == "delivery_delay":
