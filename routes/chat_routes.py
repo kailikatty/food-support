@@ -17,7 +17,11 @@ def chat():
     data = request.get_json()
     user_input = data.get("message", "").lower()
 
-    intent = detect_intent(user_input)
+    if "[image_uploaded]" in user_input:
+        user_state["food_issue"]["image_uploaded"] = True
+        intent = "food_issue"
+    else:
+        intent = detect_intent(user_input)
 
     follow_up_keywords = ["refund", "how", "when", "why", "where", "can i", "what"]
     is_follow_up = any(word in user_input for word in follow_up_keywords)
