@@ -12,10 +12,17 @@ user_state = {
 
 chat_bp = Blueprint("chat", __name__)
 
-@chat_bp.route("/chat", methods=["POST"])
+ @chat_bp.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
     user_input = data.get("message", "").lower()
+
+    # ✅ INIT STATE (สำคัญมาก)
+    if "food_issue" not in user_state:
+        user_state["food_issue"] = {
+            "described": False,
+            "image_uploaded": False
+        }
 
     # 📸 detect image upload
     if "[image_uploaded]" in user_input:
@@ -24,8 +31,65 @@ def chat():
     else:
         intent = detect_intent(user_input)
 
-    follow_up_keywords = ["refund", "how", "when", "why", "where", "can i", "what"]
-    is_follow_up = any(word in user_input for word in follow_up_keywords)
+    # 🔥 force food_issue (ช่วยให้ flow เข้าแน่)
+    if any(word in user_input for word in ["food", "insect", "spoiled", "bad", "cold"]):
+        intent = "food_issue"
+
+    # =========================
+    # 🍔 FOOD ISSUE FLOW
+    # =========================
+    if intent == "food_issue":
+
+        if any(word in user_input for word in ["insect", "spoiled", "bad", "cold"]):
+            user_state["food_issue"]["described"] = True
+
+        # CASE 1: มีรูป ยังไม่อธิบาย
+        if user_state["food_issue"]["image_uploaded"] and not user_state["food_issue"]["described"]:
+            reply = (
+                "Thank you for your photo 🙏\n\n"
+                "Could you please describe what was wrong with the food?"
+            )
+
+        # CASE 2: อธิบายแล้ว ไม่มีรูป
+        elif user_state["food_issue"]["described"] and not user_state["food_issue"]["image_uploaded"]:
+            reply = (
+                "We're really sorry to hear that 🙏\n\n"
+                "Please upload a photo so we can verify the issue."
+            )
+
+        # CASE 3: ครบ → refund
+        elif user_state["food_issue"]["described"] and user_state["food_issue"]["image_uploaded"]:
+            reply = (
+                "Thank you for your patience 🙏\n\n"
+                "We have verified the issue and will proceed with your refund.\n"
+                "Your refund will be processed within 15 minutes to 1 hour."
+            )
+
+            # reset state
+            user_state["food_issue"] = {
+                "described": False,
+                "image_uploaded": False
+            }
+
+        # CASE 4: เริ่มต้น
+        else:
+            reply = (
+                "We're really sorry about your food issue 🙏\n\n"
+                "Could you please describe what was wrong with the food?\n"
+                "(e.g. cold, spoiled, missing items)\n\n"
+                "You can also upload a photo for verification."
+            )
+
+    # =========================
+    # 💬 DEFAULT FLOW
+    # =========================
+    else:
+        reply = "How can I assist you today? 😊"
+
+    return jsonify({
+        "reply": reply,
+        "intent": intent
+    })
 
     # 🔥 OTHERS → AI
     if intent == "others" or intent == "unknown":
