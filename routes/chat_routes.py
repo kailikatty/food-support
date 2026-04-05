@@ -97,15 +97,14 @@ def chat():
 
     # 🔥 DELIVERY STAFF
     elif any(word in user_input for word in ["delivery man", "rider", "driver", "courier"]):
-        reply = """We’re really sorry to hear about your experience with our delivery staff 🙏 
-    That’s definitely not the level of service we aim to provide.
-    We truly appreciate you bringing this to our attention. We will look into this matter and take appropriate action to prevent it from happening again.
+        reply = """We’re really sorry to hear about your experience with our delivery staff. 🙏 
+    This isn't the level of service we aim to provide. We will look into this matter and take appropriate action to prevent it from happening again.
     Please let us know if there’s anything else we can assist you with."""
 
     # 🔥 WRONG ORDER
     elif intent == "wrong_order":
         reply = (
-            "We’re really sorry that you received the wrong order 🙏 That’s definitely not the experience we want for you.\n\n"
+            "We’re really sorry that you received the wrong order. 🙏\n\n"
             "Could you please share a photo of your receipt or the items you received?"\n
             "This will help us verify the issue quickly.\n\n"
             "Once confirmed, we will process your refund right away."
@@ -158,22 +157,21 @@ def chat():
     # 🔥 DELIVERY DELAY
     
     elif intent == "delivery_delay":
-        reply = """We’re really sorry for the delay 🙏 We completely understand how frustrating this must be.
-    Our team is currently checking your order status and will make sure this is resolved for you as soon as possible.
-    💚 We’re here to help you every step of the way."""
+        reply = """We’re really sorry for the delay. 🙏 We completely understand how frustrating this must be.
+    Our team is currently checking your order status and will make sure this is resolved for you as soon as possible."""
 
     # 🔥 NOT RECEIVED
     elif intent == "not_received":
         reply = (
-            "We’re really sorry you haven’t received your order 🙏 We understand how concerning this is.\n\n"
-            "We’re checking your order right now, and if it hasn’t been delivered, we’ll make sure you receive a full refund 💚"
+            "We’re really sorry you haven’t received your order. 🙏 We understand how concerning this is.\n\n"
+            "We’re checking your order right now, and if it hasn’t been delivered, we’ll make sure you receive a full refund. 💚"
         )
 
     # 🔥 CANCEL ORDER
     elif intent == "cancel_order":
         reply = (
-            "No worries at all 😊 Your order has been successfully cancelled.\n\n"
-            "If you’ve already made a payment, the refund will be processed shortly. Let us know if you need anything else 💚"
+            "No worries at all. 😊 Your order has been successfully cancelled.\n\n"
+            "If you’ve already made a payment, the refund will be processed shortly.💚"
         )
 
     # 🤖 FOLLOW-UP
