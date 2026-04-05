@@ -16,6 +16,12 @@ chat_bp = Blueprint("chat", __name__)
 def chat():
     data = request.get_json()
     user_input = data.get("message", "").lower()
+    
+    intent = detect_intent(user_input)
+    
+    follow_up_keywords = ["refund", "when", "how", "where", "why", "can i", "status"]
+    is_follow_up = any(word in user_input for word in follow_up_keywords)
+    
 
     # ✅ INIT STATE (สำคัญมาก)
     if "food_issue" not in user_state:
@@ -175,11 +181,17 @@ def chat():
 
     # 🤖 FOLLOW-UP
     elif is_follow_up:
-        reply = generate_ai_response(user_input, intent)
+        try:
+            reply = generate_ai_response(user_input, intent)
+        except:
+            reply = "Let me check that for you."
 
     # 🤖 DEFAULT
     else:
-        reply = generate_ai_response(user_input, intent)
+        try:
+            reply = generate_ai_response(user_input, intent)
+        except:
+            reply = "How can I assist you today? 😊"
 
     return jsonify({
         "reply": reply,
