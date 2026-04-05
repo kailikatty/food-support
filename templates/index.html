@@ -351,7 +351,7 @@ function handleImageUpload(e) {
         addMessage(`<img src="${ev.target.result}" style="max-width:150px;border-radius:10px;">`, "user");
 
         const bubble = addMessage("", "bot");
-        typeText(bubble, "Thank you for sharing the photo. 🙏 We're checking this for you now. Please wait for a moment");
+        typeText(bubble, "Thank you for sharing the photo. 🙏 We're checking this for you now. Please wait for a moment.");
 
         fetch("/chat", {
             method: "POST",
@@ -361,11 +361,12 @@ function handleImageUpload(e) {
 
         setTimeout(() => {
             const b2 = addMessage("", "bot");
-            typeText(b2, "Thank you for waiting. We will proceed with your refund. You should receive it within 15 minutes to 1 hour. Thank you for your patience.");
+            typeText(b2, "Thank you for your patience. We will proceed with your refund. You should receive it within 15 minutes to 1 hour. We sincerely apologize for the inconvenience caused.");
         }, 10000);
     };
 
     reader.readAsDataURL(file);
+    e.target.value = ""; 
 }
 
 
