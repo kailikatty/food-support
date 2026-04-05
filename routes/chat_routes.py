@@ -86,10 +86,6 @@ def chat():
     else:
         reply = "How can I assist you today? 😊"
 
-    return jsonify({
-        "reply": reply,
-        "intent": intent
-    })
 
     # 🔥 OTHERS → AI
     if intent == "others" or intent == "unknown":
