@@ -30,7 +30,7 @@ Built as a full-stack application, combining a Python Flask backend with a respo
 Frontend
 - HTML, CSS, JavaScript
 - Custom chat UI with animations
-- Deployed on Vercel
+- Deployed on Render
 
 Backend
 - Python (Flask)
