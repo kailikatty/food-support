@@ -3,7 +3,6 @@
 An AI-powered customer support chatbot designed to handle food delivery inquiries with natural, human-like conversations.
 Built as a full-stack application, combining a Python Flask backend with a responsive web interface, focusing on intelligent workflows and user experience.
 
----
 
 🚀 Features
 
@@ -13,8 +12,6 @@ Built as a full-stack application, combining a Python Flask backend with a respo
 - ⚡ Real-time chat interface with typing animation
 - 🧠 Smart workflow design for better user experience
 - 📱 Lightweight and responsive UI
-
----
 
 🎯 Key Focus
 - AI-driven automation
@@ -51,4 +48,4 @@ Backend
 🌐 Live Demo
 
 - Frontend: https://food-support.onrender.com
-⁠- Backend API (Render): https://food-support.onrender.com⁠
+- Backend API (Render): https://food-support.onrender.com⁠
