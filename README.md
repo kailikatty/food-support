@@ -3,7 +3,9 @@
 An AI-powered customer support chatbot designed to handle food delivery inquiries with natural, human-like conversations.
 Built as a full-stack application, combining a Python Flask backend with a responsive web interface, focusing on intelligent workflows and user experience.
 
+
 🚀 Features
+
 🤖 AI-powered responses using Gemini API
 💬 Human-like conversation flow for customer support
 📦 Handles common scenarios (orders, delays, issues, assistance)
@@ -11,24 +13,26 @@ Built as a full-stack application, combining a Python Flask backend with a respo
 🧠 Smart workflow design for better user experience
 📱 Lightweight and responsive UI
 
+
 🎯 Key Focus
 - AI-driven automation
 - User experience (UX)
 - Real-world customer support simulation
 
+
 🛠️ Tech Stack
 
 Frontend
-HTML, CSS, JavaScript
-Custom chat UI with animations
-Deployed on Vercel
+- HTML, CSS, JavaScript
+- Custom chat UI with animations
+- Deployed on Vercel
 
 Backend
-Python (Flask)
-REST API
-Google Gemini API integration
-Flask-CORS for cross-origin requests
-Deployed on Render
+- Python (Flask)
+- REST API
+- Google Gemini API integration
+- Flask-CORS for cross-origin requests
+- Deployed on Render
 
 🧠 How It Works
 1. User sends a support request (e.g., order issue, delivery delay)
@@ -40,5 +44,6 @@ Deployed on Render
 
 🌐 Live Demo
 
-Frontend: https://food-support.onrender.com⁠
+Frontend: https://food-support.onrender.com
+⁠
 Backend API (Render): https://food-support.onrender.com⁠
