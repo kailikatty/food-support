@@ -15,12 +15,14 @@ body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     background: #f5f7fb;
+    overflow: hidden;
 }
 
 /* 📦 CONTAINER */
 .chat-container {
     width: 100%;
     max-width: 520px;
+    min-height: 80vh;
     height: 95dvh;
     margin: 20px auto;
     display: flex;
@@ -33,6 +35,10 @@ body {
 
 /* 📱 MOBILE */
 @media (max-width: 600px) {
+    body {
+        overflow: hidden;
+    }
+}
     .chat-container {
         width: 100%;
         max-width: 100%;
